@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Wage Workers</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #87CEEB; /* Light Blue */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 8px; /* Add margin to create space */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="userInfoForm">
+        <h1 style="text-align: center; color: #333;">Daily Wage Workers</h1>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="contact">Contact:</label>
+        <input type="text" id="contact" name="contact" required>
+
+        <label for="occupation">Occupation:</label>
+        <input type="text" id="occupation" name="occupation" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <button type="button" onclick="submitForm()">Submit</button>
+        <button type="button" onclick="viewUsers()">View Previously Submitted Users</button>
+    </form>
+
+    <script>
+        document.getElementById("userInfoForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            submitForm();
+        });
+
+        function submitForm() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const contact = document.getElementById('contact').value;
+            const occupation = document.getElementById('occupation').value;
+            const phone = document.getElementById('phone').value;
+
+            // Validate and store user inputs
+            if (name && isValidEmail(email) && contact && occupation && isValidPhone(phone)) {
+                const userInfo = { name, email, contact, occupation, phone };
+                storeUser(userInfo);
+                document.getElementById('userInfoForm').reset(); // Clear the form after submission
+            } else {
+                alert('Please fill in all fields with valid information.');
+            }
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^\d{10}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function storeUser(userInfo) {
+            // Store user information in local storage
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            users.push(userInfo);
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        function viewUsers() {
+            window.location.href = 'view_users.html';
+        }
+    </script>
+
+</body>
+</html>
