@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Submitted Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #userList {
+            margin-top: 20px;
+        }
+
+        .userListItem {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .deleteButton {
+            margin-left: 10px;
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Previously Submitted Users</h1>
+
+    <div id="userList">
+        <ul id="userListItems"></ul>
+    </div>
+
+    <script>
+        function displayUsers() {
+            const userListItems = document.getElementById('userListItems');
+            userListItems.innerHTML = '';
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            users.forEach((user, index) => {
+                const listItem = document.createElement('li');
+                listItem.className = 'userListItem';
+                listItem.innerHTML = `<strong>Name:</strong> ${user.name}<br>
+                                     <strong>Email:</strong> ${user.email}<br>
+                                     <strong>Contact:</strong> ${user.contact}<br>
+                                     <strong>Occupation:</strong> ${user.occupation}<br>
+                                     <strong>Phone:</strong> ${user.phone}`;
+                
+                const deleteButton = document.createElement('span');
+                deleteButton.className = 'deleteButton';
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteUserInfo(index);
+
+                listItem.appendChild(deleteButton);
+                userListItems.appendChild(listItem);
+            });
+        }
+
+        function deleteUserInfo(index) {
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            users.splice(index, 1);
+            localStorage.setItem('users', JSON.stringify(users));
+            displayUsers();
+        }
+
+        // Display existing users on page load
+        displayUsers();
+    </script>
+
+</body>
+</html>
